@@ -1,0 +1,30 @@
+---
+- name: Install Apache and Git
+  become: yes
+  yum:
+    name:
+      - httpd
+      - git
+    state: present
+
+- name: Clone tooling app repo
+  become: yes
+  ansible.builtin.git:
+    repo: "https://github.com/babu97/tooling.git"
+    dest: ~/app
+    force: yes
+
+- name: Copy app to /var/www/html
+  become: yes
+  copy:
+    src: ~/app/html
+    dest: /var/www
+    remote_src: yes
+    mode: "777"
+    owner: apache
+
+- name: Make sure httpd service is running
+  become: yes
+  ansible.builtin.service:
+    name: httpd
+    state: started
