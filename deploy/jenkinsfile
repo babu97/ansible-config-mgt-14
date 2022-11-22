@@ -2,6 +2,17 @@ pipeline {
     agent any
 
   stages {
+
+    //Initial clean up-Check if thr workspace is existing 
+     stage("Initial cleanup") {
+          steps {
+            dir("${WORKSPACE}") {
+              deleteDir()
+            }
+          }
+        }
+
+    //ends here
     stage('Build') {
       steps {
         script {
@@ -17,5 +28,24 @@ pipeline {
         }
       }
     }
+    stage('package'){
+     steps{
+        script{
+            sh 'echo "Packaging App"'
+        }
+     }  
+    }
+//deploy
+    stage('deploy'){
+        steps{
+            script{
+               sh 'echo "Deploy to Dev"' 
+            }
+        }
+    }
+   stage("clean up")
+   steps{
+     cleanWs()
+     }
     }
 }
