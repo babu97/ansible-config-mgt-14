@@ -43,9 +43,9 @@ pipeline {
             }
         }
     }
-   stage("clean up")
-   steps{
-     cleanWs()
+   stage('Clean Workspace after build'){
+        steps{
+          cleanWs()
      }
     }
 }
