@@ -18,7 +18,7 @@ stage("Initial cleanup") {
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'main', url: 'https://github.com/Livingstone95/ansible-config.git'
+            git branch: 'Feature/jenkinspipeline-stages', url: 'https://github.com/babu97/ansible-config-mgt-14.git'
          }
        }
 
@@ -31,8 +31,7 @@ stage("Initial cleanup") {
 
       stage('Run Ansible playbook') {
         steps {
-           ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory}', playbook: 'playbooks/site.yml'
-         }
+ansiblePlaybook become: true, colorized: true, disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/dev.yml', playbook: 'playbooks/site.yml' }
       }
 
       stage('Clean Workspace after build'){
