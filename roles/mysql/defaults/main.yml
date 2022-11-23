@@ -114,10 +114,10 @@ mysql_databases:
 
 # Users.
 #mysql_users: 
- # - name: 'webaccess'
-  #  host: 0.0.0.0
-   # password: secret
-    #priv: '*.*:all,GRANT'
+  - name: 'webaccess'
+    host: 0.0.0.0
+    password: secret
+    priv: '*.*:all,GRANT'
 
 mysql_disable_log_bin: false
 
