@@ -7,9 +7,9 @@
   #tags:
     #- always
 
- - hosts: artifactory
- - name: artifactory assignmnet
-   ansible.builtin.import_playbook: ../static-assignments/artifactory.yml 
+#  - hosts: artifactory
+#  - name: artifactory assignmnet
+#    ansible.builtin.import_playbook: ../static-assignments/artifactory.yml 
 
 #- name: include env-vars file
   #import_playbook: ../dynamic-assignments/env-vars.yml
