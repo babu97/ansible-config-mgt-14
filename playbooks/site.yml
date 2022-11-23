@@ -16,7 +16,9 @@
   #tags:
    # - always
 
- # import_playbook: ../static-assignments/db.yml
+- hosts: db
+- name: db assignment
+  ansible.builtin.import_playbook: ../static-assignments/db.yml
 
 #- name: import webservers file
  # import_playbook: ../static-assignments/webservers.yml
