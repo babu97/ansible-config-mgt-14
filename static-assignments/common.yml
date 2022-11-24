@@ -1,14 +1,14 @@
 ---
 - name: setup Mysql with medium_db db and remote login
   become: yes
-  hosts: Dbservers
+  hosts: ansible
   tasks:
     - name: Installing Mysql  and dependencies
       package:
        name: "{{item}}"
        state: present
        update_cache: yes
-     loop:
+      loop:
        - mysql-server
        - mysql-client 
        - python3-mysqldb
@@ -16,7 +16,7 @@
      become: yes
     - name: start and enable mysql service
       service:
-        name: mysql
+        name: mysqld
         state: started
         enabled: yes
     - name: creating mysql user (medium_post)
@@ -37,9 +37,9 @@
          line: 'bind-address = 0.0.0.0'
          backup: yes
       notify:
-         - Restart mysql
+         - Restart mysqld
   handlers:
-    - name: Restart mysql
+    - name: Restart mysqld
       service:
-        name: mysql
+        name: mysqld
         state: restarted
