@@ -1,26 +1,45 @@
 ---
-- name: update web, nfs and db servers
-  hosts: webservers, nfs, db
-  remote_user: ec2-user
+- name: setup Mysql with medium_db db and remote login
   become: yes
-  become_user: root
+  hosts: Dbservers
   tasks:
-    - name: ensure wireshark is at the latest version
-      yum:
-        name: wireshark
-        state: latest
-
-- name: update LB server
-  hosts: lb
-  remote_user: ec2-user
-  become: yes
-  become_user: root
-  tasks:
-    - name: Update apt repo
-      yum: 
-        update_cache: yes
-
-    - name: ensure wireshark is at the latest version
-      yum:
-        name: wireshark
-        state: latest
+    - name: Installing Mysql  and dependencies
+      package:
+       name: "{{item}}"
+       state: present
+       update_cache: yes
+     loop:
+       - mysql-server
+       - mysql-client 
+       - python3-mysqldb
+       - libmysqlclient-dev
+     become: yes
+    - name: start and enable mysql service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+    - name: creating mysql user (medium_post)
+      mysql_user:
+        name: "{{db_user}}"
+        password: "{{db_pass}}"
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+    - name: creating medium_db
+      mysql_db:
+        name: "{{db_name}}"
+        state: present
+    - name: Enable remote login to mysql
+      lineinfile:
+         path: /etc/mysql/mysql.conf.d/mysqld.cnf
+         regexp: '^bind-address'
+         line: 'bind-address = 0.0.0.0'
+         backup: yes
+      notify:
+         - Restart mysql
+  handlers:
+    - name: Restart mysql
+      service:
+        name: mysql
+        state: restarted
