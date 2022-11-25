@@ -27,6 +27,6 @@
 #   import_playbook: ../static-assignments/lb.yml
 #   when: load_balancer_is_required
 
- - hosts: jenkins
- - name: ansible mysql client
-   ansible.builtin.import_playbook: ../static-assignments/common.yml
+#  - hosts: jenkins
+#  - name: ansible mysql client
+#    ansible.builtin.import_playbook: ../static-assignments/common.yml
