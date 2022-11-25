@@ -16,9 +16,9 @@
   #tags:
    # - always
 
-- hosts: db
-- name: db assignment
-  ansible.builtin.import_playbook: ../static-assignments/db.yml
+# - hosts: db
+# - name: db assignment
+#   ansible.builtin.import_playbook: ../static-assignments/db.yml
 
 #- name: import webservers file
  # import_playbook: ../static-assignments/webservers.yml
@@ -30,3 +30,7 @@
 #  - hosts: jenkins
 #  - name: ansible mysql client
 #    ansible.builtin.import_playbook: ../static-assignments/common.yml
+
+   - hosts: todo
+   - name: Deploy the todo application
+     ansible.builtin.import_playbook: ../static-assignments/deployment.yml

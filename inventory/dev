@@ -5,5 +5,5 @@
 172.31.83.52 ansible_ssh_user='ubuntu' 
 
 
-
-
+[tooling]
+ 172.31.19.211 ansible_ssh_user='ec2-user'
