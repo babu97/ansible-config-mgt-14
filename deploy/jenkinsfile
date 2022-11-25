@@ -21,7 +21,7 @@ stage("Initial cleanup") {
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'Feature/jenkinspipeline-stages', url: 'https://github.com/babu97/ansible-config-mgt-14.git'
+            git branch: 'main', url: 'https://github.com/babu97/ansible-config-mgt-14.git'
          }
        }
 
