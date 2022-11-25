@@ -1,23 +1,36 @@
 ---
-- name: Include dynamic variables 
-  hosts: all
+#- name: Include dynamic variables 
+ # hosts: all
 
-- name: import common file
-  import_playbook: ../static-assignments/common.yml
-  tags:
-    - always
+#- name: import common file
+  #import_playbook: ../static-assignments/common.yml
+  #tags:
+    #- always
 
-- name: include env-vars file
-  import_playbook: ../dynamic-assignments/env-vars.yml
-  tags:
-    - always
+#  - hosts: artifactory
+#  - name: artifactory assignmnet
+#    ansible.builtin.import_playbook: ../static-assignments/artifactory.yml 
 
-#- name: import database file
- # import_playbook: ../static-assignments/db.yml
+#- name: include env-vars file
+  #import_playbook: ../dynamic-assignments/env-vars.yml
+  #tags:
+   # - always
 
-- name: import webservers file
-  import_playbook: ../static-assignments/webservers.yml
+# - hosts: db
+# - name: db assignment
+#   ansible.builtin.import_playbook: ../static-assignments/db.yml
 
-- name: import Loadbalancers assignment
-  import_playbook: ../static-assignments/lb.yml
-  when: load_balancer_is_required
+#- name: import webservers file
+ # import_playbook: ../static-assignments/webservers.yml
+
+# - name: import Loadbalancers assignment
+#   import_playbook: ../static-assignments/lb.yml
+#   when: load_balancer_is_required
+
+#  - hosts: jenkins
+#  - name: ansible mysql client
+#    ansible.builtin.import_playbook: ../static-assignments/common.yml
+
+   - hosts: todo
+   - name: Deploy the todo application
+     ansible.builtin.import_playbook: ../static-assignments/deployment.yml

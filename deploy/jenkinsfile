@@ -1,52 +1,47 @@
-pipeline {
-    agent any
+pipeline{
 
-  stages {
+agent any
 
-    //Initial clean up-Check if thr workspace is existing 
-     stage("Initial cleanup") {
-          steps {
-            dir("${WORKSPACE}") {
+environment{
+  ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
+
+}
+  parameters {
+      string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
+    }
+stages{
+
+stage("Initial cleanup") {
+ steps {
+  dir("${WORKSPACE}") {
               deleteDir()
             }
           }
         }
 
-    //ends here
-    stage('Build') {
-      steps {
-        script {
-          sh 'echo "Building Stage"'
-        }
-      }
-    }
+      stage('Checkout SCM') {
+         steps{
+            git branch: 'Feature/jenkinspipeline-stages', url: 'https://github.com/babu97/ansible-config-mgt-14.git'
+         }
+       }
 
-    stage('Test') {
-      steps {
-        script {
-          sh 'echo "Testing Stage"'
+      stage('Prepare Ansible For Execution') {
+        steps {
+          sh 'echo ${WORKSPACE}' 
+          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
+        }
+     }
+
+      stage('Run Ansible playbook') {
+        steps {
+ ansiblePlaybook colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory:'inventory/${inventory}', playbook: 'playbooks/site.yml'}
+      }
+
+      stage('Clean Workspace after build'){
+        steps{
+          cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
         }
       }
-    }
-    stage('package'){
-     steps{
-        script{
-            sh 'echo "Packaging App"'
-        }
-     }  
-    }
-//deploy
-    stage('deploy'){
-        steps{
-            script{
-               sh 'echo "Deploy to Dev"' 
-            }
-        }
-    }
-   stage('Clean Workspace after build'){
-        steps{
-          cleanWs()
-     }
-    }
 }
 }
+  
