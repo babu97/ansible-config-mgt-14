@@ -1,5 +1,3 @@
-[jenkins]
-172.31.11.150 ansible_ssh_user='ec2-user'
 [nginx]
 <Nginx-Private-IP-Address>
 [sonarqube]
