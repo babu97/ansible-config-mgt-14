@@ -6,4 +6,4 @@
 
 
 [todo]
-172.31.30.153 ansible_ssh_user='ubuntu'
+172.31.81.10 ansible_ssh_user='ubuntu'
