@@ -4,23 +4,22 @@
   hosts: todo
 
   tasks:
-    # it es
-
-    
+  
     - name: install httpd on the webserver
-      ansible.builtin.yum:
-        name: httpd
+      ansible.builtin.apt:
+        name: http
         state: present
 
     - name: ensure httpd is started and enabled
       ansible.builtin.service:
-        name: httpd
+        name: http
         state: started 
         enabled: yes
       
     - name: install PHP
-      ansible.builtin.yum:
-        name:
+      ansible.builtin.apt:
+      name={{ item }} update_cache=yes state=latest
+      with_items:
           - php 
           - php-mysqlnd
           - php-gd 
@@ -33,8 +32,6 @@
           - php-xml
           - php-fpm
           - php-json
-        enablerepo: php:remi-7.4
-        state: present
     
     - name: ensure php-fpm is started and enabled
       ansible.builtin.service:
@@ -45,30 +42,30 @@
     - name: Download the artifact
       get_url:
         url: http://3.237.72.80:8082/artifactory/PBL/php-todo
-        dest: /home/ec2-user/
+        dest: /home/ubuntu/
         url_username: admin
         url_password: 8*2rX7gKJNrp
 
 
     - name: unzip the artifacts
       ansible.builtin.unarchive:
-       src: /home/ec2-user/php-todo
-       dest: /home/ec2-user/
+       src: /home/ubuntu/php-todo
+       dest: /home/ubuntu/
        remote_src: yes
 
     - name: deploy the code
       ansible.builtin.copy:
-        src: /home/ec2-user/var/lib/jenkins/workspace/php-todo_main/
+        src: /home/ubuntu/var/lib/jenkins/workspace/php-todo_main/
         dest: /var/www/html/
         force: yes
         remote_src: yes
 
     - name: remove nginx default page
       ansible.builtin.file:
-        path: /etc/httpd/conf.d/welcome.conf
+        path: /etc/nginx/sites-enabled/default
         state: absent
 
-    - name: restart httpd
+    - name: restart http
       ansible.builtin.service:
-        name: httpd
+        name: http
         state: restarted
