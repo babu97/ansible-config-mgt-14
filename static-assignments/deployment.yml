@@ -4,22 +4,29 @@
   hosts: todo
 
   tasks:
-  
+    - name: install remi and rhel repo
+      ansible.builtin.yum:
+        name: 
+          - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+          - dnf-utils
+          - http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+        disable_gpg_check: yes
+
+    
     - name: install httpd on the webserver
-      ansible.builtin.apt:
-        name: http
+      ansible.builtin.yum:
+        name: httpd
         state: present
 
     - name: ensure httpd is started and enabled
       ansible.builtin.service:
-        name: http
+        name: httpd
         state: started 
         enabled: yes
       
     - name: install PHP
-      ansible.builtin.apt:
-      name={{ item }} update_cache=yes state=latest
-      with_items:
+      ansible.builtin.yum:
+        name:
           - php 
           - php-mysqlnd
           - php-gd 
@@ -32,6 +39,8 @@
           - php-xml
           - php-fpm
           - php-json
+        enablerepo: php:remi-7.4
+        state: present
     
     - name: ensure php-fpm is started and enabled
       ansible.builtin.service:
@@ -41,31 +50,31 @@
 
     - name: Download the artifact
       get_url:
-        url: http://3.237.72.80:8082/artifactory/PBL/php-todo
-        dest: /home/ubuntu/
+        url: http://3.125.156.235:8082/artifactory/PBL/php-todo
+        dest: /home/ec2-user/
         url_username: admin
-        url_password: 8*2rX7gKJNrp
+        url_password: APBKm4qXoDaoE4pTfHAD6iPnJMh  
 
 
     - name: unzip the artifacts
       ansible.builtin.unarchive:
-       src: /home/ubuntu/php-todo
-       dest: /home/ubuntu/
+       src: /home/ec2-user/php-todo
+       dest: /home/ec2-user/
        remote_src: yes
 
     - name: deploy the code
       ansible.builtin.copy:
-        src: /home/ubuntu/var/lib/jenkins/workspace/php-todo_main/
+        src: /home/ec2-user/var/lib/jenkins/workspace/php-todo_main/
         dest: /var/www/html/
         force: yes
         remote_src: yes
 
     - name: remove nginx default page
       ansible.builtin.file:
-        path: /etc/nginx/sites-enabled/default
+        path: /etc/httpd/conf.d/welcome.conf
         state: absent
 
-    - name: restart http
+    - name: restart httpd
       ansible.builtin.service:
-        name: http
+        name: httpd
         state: restarted
