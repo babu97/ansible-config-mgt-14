@@ -3,6 +3,6 @@
 [nginx]
 <Nginx-Private-IP-Address>
 [sonarqube]
-<sonarQube-Private-IP-Address>
+172.31.5.126 ansible_ssh_user='ec2-user'
 [artifactory]
 172.31.1.33 ansible_ssh_user='ec2-user'
