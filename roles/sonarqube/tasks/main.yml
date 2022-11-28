@@ -19,12 +19,12 @@
 
 
  - name: Add ppa  repository 
-   ansible.builtin.yum_repository:
+   ansible.builtin.apt_repository:
      repo: ppa:linuxuprising/java
 
 
 - name: install python3
-  ansible.builtin.yum:
+  ansible.builtin.apt:
     name: 
       - python3
       - python3-pip
