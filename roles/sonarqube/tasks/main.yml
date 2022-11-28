@@ -18,9 +18,9 @@
     create: yes
 
 
- - name: Add ppa  repository 
-   ansible.builtin.yum_repository:
-     repo: ppa:linuxuprising/java
+#  - name: Add ppa  repository 
+#    ansible.builtin.yum_repository:
+#      repo: ppa:linuxuprising/java
 
 
 - name: install python3
