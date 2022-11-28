@@ -31,9 +31,9 @@
 #  - name: ansible mysql client
 #    ansible.builtin.import_playbook: ../static-assignments/common.yml
 
-  #  - hosts: todo
-  #  - name: Deploy the todo application
-  #    ansible.builtin.import_playbook: ../static-assignments/deployment.yml
+    - hosts: todo
+    - name: Deploy the todo application
+      ansible.builtin.import_playbook: ../static-assignments/deployment.yml
 
 
      - hosts: sonarqube
